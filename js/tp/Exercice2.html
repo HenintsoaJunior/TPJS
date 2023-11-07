@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page avec nom d'utilisateur</title>
+</head>
+<body>
+    <script>
+      
+        var nomUtilisateur = prompt("Veuillez entrer votre nom :");
+
+        if (nomUtilisateur !== null && nomUtilisateur !== "") {
+           
+            document.title = "Bienvenue, " + nomUtilisateur + " !";
+        } else {
+           
+            document.title = "Page sans nom d'utilisateur";
+        }
+    </script>
+</body>
+</html>

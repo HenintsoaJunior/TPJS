@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste de Courses</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste de Courses</h1>
+    <div>
+        <label for="item">Sélectionnez un élément :</label>
+        <select id="item">
+            <option value="briquet">Briquet (1000Ar)</option>
+            <option value="pain">Pain (500Ar)</option>
+            <option value="lait">Lait (2000Ar)</option>
+        </select>
+
+        <label for="quantity">Quantité :</label>
+        <input type="number" id="quantity" value="1" min="1">
+
+        <button onclick="addItem()">Ajouter</button>
+
+    </div>
+    <h2>Liste d'achats :</h2>
+    <ul id="shoppingList">
+    </ul>
+
+    <p>Total : <span id="totalPrice">0</span>Ar</p>
+
+    <script src="Exercice6.js"></script>
+</body>
+</html>

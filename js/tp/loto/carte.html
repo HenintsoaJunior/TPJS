@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Cartes de Jeu</title>
+    <style>
+         body {
+            background-image: url("image/Joker.webp");
+            background-size: 30%;
+            background-position: right;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(8, 63, 8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #cartes {
+            text-align: center;
+        }
+
+        .carte {
+            width: 200px;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 10px;
+            display: inline-block;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease; /* Ajout de la transition */
+        }
+
+        .carte.hidden {
+            transform: scale(0); /* Échelle la carte pour la masquer */
+            transform-origin: center center;
+        }
+
+        .carte img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .changer-carte {
+            display: block;
+            margin: 10px;
+            cursor: pointer;
+            color: blue;
+            text-decoration: none;
+        }
+
+        label {
+            display: block;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .input-container {
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            text-align: center;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu de carte</h1>
+    <label for="nombreCartes">Nombre de cartes à jouer :</label>
+    <input type="number" id="nombreCartes" required min="1">
+    <br>
+    <br>
+    <button id="genererCartes">Générer les cartes</button>
+    <div id="cartes"></div>
+</body>
+<script>
+
+// Récupérer l'élément div avec l'ID 'cartes'
+var cartesDiv = document.getElementById('cartes');
+
+// Récupérer l'élément d'entrée (input) avec l'ID 'nombreCartes'
+var nombreCartesInput = document.getElementById('nombreCartes');
+
+// Récupérer le bouton avec l'ID 'genererCartes'
+var genererCartesButton = document.getElementById('genererCartes');
+
+// Créer un tableau vide pour stocker les cartes sélectionnées
+var selectedCards = [];
+
+// Créer un tableau vide pour stocker les cartes affichées
+var displayedCards = [];
+
+// Définition d'une fonction pour mélanger un tableau (algorithme Fisher-Yates)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+// Définition d'une fonction pour générer des cartes uniques
+function generateUniqueCards(count) {
+    var cards = [];
+    var cardImages = [];
+
+    // Remplir le tableau cardImages avec les noms de fichiers d'images de cartes
+    for (var i = 1; i <= 52; i++) {
+        cardImages.push('image/' + i + '.png');
+    }
+
+    // Vérifier si le nombre demandé de cartes est disponible
+    if (count > cardImages.length) {
+        alert('Pas assez d\'images disponibles.');
+        return cards;
+    }
+
+    // Mélanger le tableau d'images
+    shuffleArray(cardImages);
+
+    // Sélectionner les premières cartes uniques du tableau mélangé
+    for (var i = 0; i < count; i++) {
+        var selectedCard = cardImages[i];
+        cards.push(selectedCard);
+    }
+
+    return cards;
+}
+
+// Définition d'une fonction pour retourner la carte lorsqu'on passe la souris dessus
+function flipCardOnHover(carteDiv) {
+    carteDiv.addEventListener('mouseover', function () {
+        const image = carteDiv.querySelector('img');
+        const originalSrc = image.getAttribute('data-original-src');
+        image.src = 'image/BACK.png'; // Chargez l'image "back.png" au survol
+        image.setAttribute('data-original-src', originalSrc); // Sauvegardez l'URL d'origine
+    });
+
+    carteDiv.addEventListener('mouseout', function () {
+        const image = carteDiv.querySelector('img');
+        const originalSrc = image.getAttribute('data-original-src');
+        image.src = originalSrc; // Réinitialise l'image à l'original au départ
+    });
+}
+
+// Définition d'une fonction pour créer un élément de carte
+function createCardElement(card) {
+    var carteDiv = document.createElement('div');
+    carteDiv.className = 'carte';
+
+    var image = document.createElement('img');
+    image.setAttribute('data-original-src', card); // Stockez l'URL d'origine dans l'attribut data-original-src
+    image.src = card;
+
+    var changerButton = document.createElement('a');
+    changerButton.className = 'changer-carte';
+    changerButton.textContent = 'Changer la carte';
+
+    // Appeler la fonction flipCardOnHover pour gérer le survol de la carte
+    flipCardOnHover(carteDiv);
+
+    return { carteDiv, image, changerButton };
+}
+
+// Définition d'une fonction pour créer des éléments de carte avec un bouton pour changer la carte
+function createCardElements(card) {
+    const elements = createCardElement(card);
+    const carteDiv = elements.carteDiv;
+    const image = elements.image;
+    const changerButton = elements.changerButton;
+
+    changerButton.addEventListener('click', function () {
+        changeCardImage(image);
+    });
+
+    carteDiv.appendChild(image);
+    carteDiv.appendChild(changerButton);
+
+    return carteDiv;
+}
+
+// Définition d'une fonction pour changer l'image de la carte actuelle
+function changeCardImage(image) {
+    var cardImages = [];
+
+    // Remplir le tableau cardImages avec les noms de fichiers d'images de cartes
+    for (var i = 1; i <= 52; i++) {
+        cardImages.push('image/' + i + '.png');
+    }
+
+    var availableCards = cardImages.slice(); // Copiez toutes les cartes
+    var currentCard = image.src;
+
+    // Retirez la carte actuellement affichée de la liste des cartes disponibles
+    availableCards = availableCards.filter(function (card) {
+        return card !== currentCard;
+    });
+
+    // Mélangez les cartes disponibles et sélectionnez une nouvelle carte
+    shuffleArray(availableCards);
+    var newCard = availableCards[0];
+
+    // Changez l'image de la carte avec la nouvelle carte
+    image.src = newCard;
+}
+
+// Définition d'une fonction pour afficher les cartes dans le div 'cartes'
+function displayCards(cards) {
+    cartesDiv.innerHTML = '';
+
+    // Parcours des cartes et ajout au div 'cartes' avec un délai pour l'animation
+    for (var i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const carteDiv = createCardElements(card);
+        carteDiv.classList.add('hidden'); // Ajouter la classe hidden ici
+        setTimeout(() => {
+            carteDiv.classList.remove('hidden');
+        }, i * 100); // 100ms de délai entre chaque carte
+        cartesDiv.appendChild(carteDiv);
+    }
+}
+
+// Ajout d'un gestionnaire d'événement sur le bouton 'Générer les cartes'
+genererCartesButton.addEventListener('click', function () {
+    var nombreCartes = parseInt(nombreCartesInput.value);
+
+    // Vérification de la validité du nombre de cartes
+    if (isNaN(nombreCartes) || nombreCartes <= 0) {
+        alert('Veuillez entrer un nombre valide de cartes.');
+    } else {
+        var cartes = generateUniqueCards(nombreCartes);
+        displayCards(cartes);
+    }
+});
+
+
+</script>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirage loto</title>
+    <style>
+        .loto {
+            font-family: Arial, serif;
+            display: inline-block;
+            height: 1.54em;
+            width: 1.54em;
+            margin: 3px;
+            line-height: 1.54em;
+            text-align: center;
+            text-transform: none;
+            font-style: normal;
+            border-radius: 50%;
+            color: white;
+            position: relative;
+            box-shadow: -0.5em -0.5em 2em -1em #000 inset, 0.5em 0.5em 2em -1em red inset;
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.15s linear;
+            vertical-align: middle;
+            font-size: 2.5em;
+            background-color: blue; /* Couleur de fond des balles */
+        }
+
+        .loto.pair {
+            background-color: blue;
+        }
+
+        .loto.impair {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tirage loto</h1>
+    <label for="nombreBoules">Nombre de balles à afficher:</label>
+    <input type="number" id="nombreBoules" required min="1">
+    <label for="nombre1">Premier nombre :</label>
+    <input type="number" id="nombre1" required min="1" max="20">
+    <label for="nombre2">Deuxième nombre :</label>
+    <input type="number" id="nombre2" required min="1" max="20">
+    <button id="jouerloto">Jouer</button>
+    <div id="boules"></div>
+</body>
+<script>
+    var boules = document.getElementById('boules');
+    var nombreBoulesInput = document.getElementById("nombreBoules");
+    var nombre1Input = document.getElementById("nombre1");
+    var nombre2Input = document.getElementById("nombre2");
+    var jouerloto = document.getElementById("jouerloto");
+    
+
+    function generateRandomNumbers(count, min, max) {
+        var randomNumbers = new Set();
+        while (randomNumbers.size < count) {
+            var random = Math.floor(Math.random() * (max - min + 1)) + parseInt(min);
+            randomNumbers.add(random);
+        }
+        return Array.from(randomNumbers);
+    }
+
+    function displayBalls(numbers) {
+        boules.innerHTML = "";
+        var nombreArray = numbers;
+        for (var i = 0; i < nombreArray.length; i++) {
+            var number = nombreArray[i];
+            var balle = document.createElement("div");
+            balle.setAttribute('class', 'loto');
+            if (number % 2 === 0) {
+                balle.classList.add('pair');
+            } else {
+                balle.classList.add('impair');
+            }
+            balle.innerHTML= number;
+            boules.appendChild(balle);
+        }
+    }
+
+    function playLoto() {
+        var nombreBoules = nombreBoulesInput.value;
+        var nombre1 = nombre1Input.value;
+        var nombre2 = nombre2Input.value;
+
+        if (nombre1 === nombre2) {
+            alert("Les nombres doivent être différents.");
+            return;
+        }
+
+        var randomNumbers = generateRandomNumbers(nombreBoules, nombre1, nombre2);
+        localStorage.setItem("nombre_loto", JSON.stringify(randomNumbers));
+        displayBalls(randomNumbers);
+    }
+
+    jouerloto.addEventListener("click", playLoto);
+</script>
+</html>

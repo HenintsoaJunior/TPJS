@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des animaux</title>
+</head>
+<body>
+    <h1>Liste des animaux</h1>
+    <select value="choseimage" name="" id="listeAnimaux">
+        
+        <option value="chat">chat</option>
+        <option value="chien">chien</option>
+        <option value="lapin">lapin</option>
+    </select>
+
+    <button onclick="AfficherImage()">Afficher l'image</button>
+    <div id="MonImage">
+
+    </div>
+    <script>
+        function AfficherImage(){
+            var listeDeroulante = document.getElementById("listeAnimaux");
+            var image = document.getElementById("MonImage");
+
+            var imageChoisi = listeDeroulante.value;
+
+            var img = new Image();
+
+            img.src = imageChoisi+".jpg";
+            img.alt = imageChoisi;
+            img.style.width = "100%";
+            img.innerHTML = "";
+            image.appendChild(img);
+            img.innerHTML = "";
+
+        }
+    </script>
+</body>
+</html>

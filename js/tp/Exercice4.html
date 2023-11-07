@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestion des noms et salaires</title>
+</head>
+<body>
+
+<h2>Gestion des noms et salaires</h2>
+
+<form id="formulaire">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" required><br><br>
+
+    <label for="salaire">Salaire :</label>
+    <input type="number" id="salaire" required><br><br>
+
+    <button type="button" onclick="ajouterInformation()">Ajouter</button>
+</form>
+
+<table border="1">
+    <thead>
+    </thead>
+    <tbody id="tableauInformations">
+    </tbody>
+</table>
+
+<script>
+    
+    function ajouterLigneAuTableau(tableau, nom, salaire) {
+    var nouvelleLigne = tableau.insertRow();
+
+    var celluleNom = nouvelleLigne.insertCell(0);
+    celluleNom.textContent = nom;
+
+    var celluleSalaire = nouvelleLigne.insertCell(1);
+    celluleSalaire.textContent = salaire;
+
+    var celluleSupprimer = nouvelleLigne.insertCell(2);
+    var boutonSupprimer = document.createElement("button");
+    boutonSupprimer.textContent = "Supprimer";
+    boutonSupprimer.onclick = function () {
+        if (tableau.rows.length > 0) {
+            tableau.deleteRow(nouvelleLigne.rowIndex);
+        }
+    };
+   
+    boutonSupprimer.style.background = "rgb(255,0,0)";
+  
+    celluleSupprimer.appendChild(boutonSupprimer);
+   
+}
+    
+    
+    function recupererValeursDuFormulaire() {
+    var nom = document.getElementById("nom").value;
+    var salaire = document.getElementById("salaire").value;
+    return { nom, salaire };
+        
+}
+    
+function ajouterInformation() {
+    var { nom, salaire } = recupererValeursDuFormulaire();
+    var tableau = document.getElementById("tableauInformations");
+    ajouterLigneAuTableau(tableau, nom, salaire);
+
+    document.getElementById("nom").value = "";
+    document.getElementById("salaire").value = "";
+}
+    
+function calculerSumSalaire(tableau){
+    var somme = 0;
+    for(var i=0 ;i<tableau.rows.length ; i++){
+        var salaire = parseFloat(tableau.rows[i].cells[1].textContent);
+        somme +=salaire;
+        
+    }
+    var sommeligne = tableau.rows[0].cells[1];
+    somme.textContent = somme.toFixed(2);
+    
+}
+
+
+</script>
+
+</body>
+</html>

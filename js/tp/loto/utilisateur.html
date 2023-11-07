@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tirage loto</title>
+    <style>
+    
+    
+        </style>
+</head>
+<body>
+    <h1>Tirage loto</h1>
+    <input type="text" id="NomUtilisateur">
+    <button id="ButtonJouer">jouer</button>
+    <p id="nombre">    </p>
+</body>
+<script>
+    var NomUtilisateur = document.getElementById("NomUtilisateur");
+    var ButtonJouer = document.getElementById("ButtonJouer");
+    var pNombre=document.getElementById('nombre');
+
+    ButtonJouer.addEventListener("click",function(){
+        var NomUser= NomUtilisateur.value.trim();
+
+        if(NomUser===""){
+            alert("Veuillez saisir un nombre");
+            return;
+        }
+        //generer le nombre aleatoire 
+        var nombre_loto = [];
+        for(var i = 0 ; i <=6 ;i++){
+            var random = Math.floor(Math.random() * 36) +1;
+            nombre_loto.push(random);
+        }
+        
+        localStorage.setItem("NomUtilisateur",JSON.stringify(nombre_loto));
+        pNombre.innerHTML=nombre_loto;
+        
+    })
+</script>
+</html>

@@ -1,0 +1,36 @@
+
+   1) Préparation HTML:
+        Créez une structure HTML pour votre générateur de cartes de jeu, y compris les balises <html>, <head>, et <body>.
+        Ajoutez les métadonnées, le titre, et les styles CSS nécessaires.
+
+   2) Contenu HTML:
+        Ajoutez un titre <h1> pour le jeu de cartes.
+        Créez un label pour l'entrée de "Nombre de cartes à jouer".
+        Ajoutez une zone d'entrée de type nombre.
+        Créez un bouton "Générer les cartes".
+        Ajoutez une <div> avec l'ID "cartes" pour afficher les cartes générées.
+
+   3) JavaScript:
+
+        Récupérez les éléments du DOM (la div 'cartes', l'entrée 'nombreCartes' et le bouton 'genererCartes').
+
+        Déclarez deux tableaux vides : selectedCards pour stocker les cartes sélectionnées et displayedCards pour stocker les cartes affichées.
+
+        Implémentez une fonction pour mélanger un tableau (fonction suffule pour eviter les doublon).
+
+        Écrivez une fonction pour générer des cartes uniques en fonction du nombre demandé.
+
+        Créez une fonction pour retourner la carte lorsque la souris passe dessus.
+
+        Définissez une fonction pour créer un élément de carte.
+
+        Créez une fonction pour créer des éléments de carte avec un bouton pour changer la carte.
+
+        Implémentez une fonction pour changer l'image de la carte actuelle.
+
+        Écrivez une fonction pour afficher les cartes dans la div 'cartes'.
+
+        Ajoutez un gestionnaire d'événement sur le bouton "Générer les cartes" pour récupérer le nombre de cartes, vérifier sa validité, générer des cartes uniques, et les afficher.
+
+   4) Styles CSS:
+        Définissez les styles CSS pour le fond, le titre, les cartes, les boutons, et les éléments d'entrée.

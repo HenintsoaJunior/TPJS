@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="UtilisateurResultat">
+    <button id="ButtonVerifier">Generer Votre choix</button>
+
+    <div id="ResultatContenaire">
+
+    </div>
+
+    <script>
+        var UtilisateurResultat = document.getElementById("UtilisateurResultat");
+        var ButtonVerifier = document.getElementById("ButtonVerifier");
+        var ResultatContenaire = document.getElementById("ResultatContenaire");
+
+        ButtonVerifier.addEventListener("click",function(){
+            var nomUtilisateur = UtilisateurResultat.value.trim();
+            if(nomUtilisateur===""){
+                alert("Nom utilisateur vide");
+                return;
+            }
+
+            var nombre_loto_Utilisateur = JSON.parse(localStorage.getItem("NomUtilisateur"));
+
+            var tirage_loto_Number = JSON.parse(localStorage.getItem("nombre_loto"));
+
+            if(!nombre_loto_Utilisateur){
+                alert("L'utilisateur n'a pas encore jouer");
+                return;
+            }
+
+            //verifier le nombre chiffre gagniant
+            var chiffreWin = 0;
+            for(var nombre of nombre_loto_Utilisateur){
+                if(tirage_loto_Number.includes(nombre)){
+                    chiffreWin++;
+                }
+            }
+           
+            ResultatContenaire.innerHTML += nomUtilisateur + " : " + nombre_loto_Utilisateur.join(",")+"<br>";
+            ResultatContenaire.innerHTML += tirage_loto_Number.join(",")+"<br>";
+            ResultatContenaire.innerHTML += chiffreWin+"<br>";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exercice Pays</title>
+  <style>
+    img{
+        width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Liste des pays</h1>
+
+  <button id="AfficherPays">Afficher 10 pays</button>
+  <button id="Afficher1PaysAleatoirement">Afficher un pays aléatoirement</button>
+  <button id="reset">Réinitialiser les comptes</button>
+
+  <table id="paysTable">
+    <tr>
+      <th>Nom</th>
+      <th>Capitale</th>
+      <th>Superficie</th>
+      <th>Population</th>
+      <th>Drapeau</th>
+      <th>Code Pays</th>
+    </tr>
+  </table>
+
+  <h1>Résultat</h1>
+  <table id="resultTable">
+    <tr>
+      <th>Nom</th>
+      <th>Nombre d'affichages</th>
+    </tr>
+  </table>
+
+  <script>
+    const pays1 = {
+  nom: "Madagascar",
+  capitale: "Antananarivo",
+  superficie: 586884,
+  population: 1275000000,
+  drapeau: "Madagascar.png",
+  codePays: "MG"
+};
+
+const pays2 = {
+  nom: "Germany",
+  capitale: "Berlin",
+  superficie: 357022,
+  population: 83190556,
+  drapeau: "Germany.png",
+  codePays: "DE"
+};
+
+const pays3 = {
+  nom: "United States",
+  capitale: "Washington, D.C.",
+  superficie: 9372610,
+  population: 331002651,
+  drapeau: "US.webp",
+  codePays: "US"
+};
+
+const pays4 = {
+  nom: "Japan",
+  capitale: "Tokyo",
+  superficie: 377975,
+  population: 126476461,
+  drapeau: "Japon.png",
+  codePays: "JP"
+};
+
+const pays5 = {
+  nom: "Brazil",
+  capitale: "Brasília",
+  superficie: 8515767,
+  population: 211049527,
+  drapeau: "Brasil.png",
+  codePays: "BR"
+};
+
+const pays6 = {
+  nom: "Canada",
+  capitale: "Ottawa",
+  superficie: 9984670,
+  population: 37742154,
+  drapeau: "Canada.png",
+  codePays: "CA"
+};
+
+const pays7 = {
+  nom: "Australia",
+  capitale: "Canberra",
+  superficie: 7692024,
+  population: 25499884,
+  drapeau: "Australia.png",
+  codePays: "AU"
+};
+
+const pays8 = {
+  nom: "China",
+  capitale: "Beijing",
+  superficie: 9596961,
+  population: 1439323776,
+  drapeau: "RepublicOfChine.png",
+  codePays: "CN"
+};
+
+const pays9 = {
+  nom: "Russia",
+  capitale: "Moscow",
+  superficie: 17098242,
+  population: 145934462,
+  drapeau: "Russia.png",
+  codePays: "RU"
+};
+
+function initialiserBoutons() {
+
+      document.querySelector("#AfficherPays").addEventListener("click", function(){
+        for (let i = 0; i < 10; i++) {
+          ajouterPays(pays[i]);
+        }
+      });
+
+   
+      document.querySelector("#Afficher1PaysAleatoirement").addEventListener("click", function() {
+        if (pays.length > 0) {
+          afficherPaysAleatoirement();
+        }
+      });
+
+      document.querySelector("#reset").addEventListener("click", function() {
+        for (const nomPays in affichagesAleatoires) {
+          affichagesAleatoires[nomPays] = 0;
+        }
+        mettreAJourResultats();
+      });
+}
+
+    // Tableau de pays
+    const pays = [pays1, pays2, pays3, pays4, pays5, pays6,  pays7, pays8, pays9];
+
+    // Tableau pour le suivi des affichages aléatoires
+    const affichagesRandom = {};
+
+    // Fonction pour ajouter un pays au tableau
+    function ajouterPays(pays) {
+      const table = document.querySelector("#paysTable");
+      const row = table.insertRow();
+      row.insertCell(0).textContent = pays.nom;
+      row.insertCell(1).textContent = pays.capitale;
+      row.insertCell(2).textContent = pays.superficie;
+      row.insertCell(3).textContent = pays.population;
+      row.insertCell(4).innerHTML = `<img src="./images/${pays.drapeau}" alt="${pays.nom}"/>`;
+      row.insertCell(5).textContent = pays.codePays;
+    }
+
+    // Fonction pour afficher un pays aléatoirement
+    function afficherPaysAleatoirement() {
+      const randomIndex = Math.floor(Math.random() * pays.length);
+      const randomPays = pays[randomIndex];
+      ajouterPays(randomPays);
+
+      // Mettre à jour le suivi des affichages aléatoires
+      if (affichagesAleatoires[randomPays.nom]) {
+        affichagesAleatoires[randomPays.nom]++;
+      } else {
+        affichagesAleatoires[randomPays.nom] = 1;
+      }
+      mettreAJourResultats();
+    }
+
+    // Fonction pour afficher les résultats
+    function mettreAJourResultats() {
+      const resultTable = document.querySelector("#resultTable");
+      resultTable.innerHTML = "";
+      for (const nomPays in affichagesAleatoires) {
+        const row = resultTable.insertRow();
+        row.insertCell(0).textContent = nomPays;
+        row.insertCell(1).textContent = affichagesAleatoires[nomPays];
+      }
+    }
+
+    // Bouton "Afficher 10 pays"
+    document.querySelector("#AfficherPays").addEventListener("click", () => {
+      // Vous pouvez ajouter plus de pays ici
+      for (let i = 0; i < 10; i++) {
+        ajouterPays(pays[i]);
+      }
+    });
+
+    // Bouton "Afficher un pays aléatoirement"
+    document.querySelector("#Afficher1PaysAleatoirement").addEventListener("click", () => {
+      if (pays.length > 0) {
+        afficherPaysAleatoirement();
+      }
+    });
+
+    // Bouton "Réinitialiser les comptes"
+    document.querySelector("#reset").addEventListener("click", () => {
+      for (const nomPays in affichagesAleatoires) {
+        affichagesAleatoires[nomPays] = 0;
+      }
+      mettreAJourResultats();
+    });
+  </script>
+</body>
+</html>
